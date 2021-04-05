@@ -5,7 +5,7 @@ namespace PDR.PatientBooking.Service.PatientServices
 {
     public interface IPatientService
     {
-        void AddPatient(AddPatientRequest request);
+        long AddPatient(AddPatientRequest request);
         GetAllPatientsResponse GetAllPatients();
     }
 }

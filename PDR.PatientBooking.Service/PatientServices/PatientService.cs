@@ -22,7 +22,7 @@ namespace PDR.PatientBooking.Service.PatientServices
             _validator = validator;
         }
 
-        public void AddPatient(AddPatientRequest request)
+        public long AddPatient(AddPatientRequest request)
         {
             var validationResult = _validator.ValidateRequest(request);
 
@@ -31,7 +31,7 @@ namespace PDR.PatientBooking.Service.PatientServices
                 throw new ArgumentException(validationResult.Errors.First());
             }
 
-            _context.Patient.Add(new Patient
+            Patient patient = new Patient
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -40,10 +40,14 @@ namespace PDR.PatientBooking.Service.PatientServices
                 DateOfBirth = request.DateOfBirth,
                 Orders = new List<Order>(),
                 ClinicId = request.ClinicId,
-                Created = DateTime.UtcNow
-            });
+                Created = request.Created
+            };
+
+            _context.Patient.Add(patient);
 
             _context.SaveChanges();
+
+            return patient.Id;
         }
 
         public GetAllPatientsResponse GetAllPatients()
