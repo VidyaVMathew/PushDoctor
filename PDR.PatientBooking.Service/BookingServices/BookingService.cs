@@ -26,15 +26,15 @@ namespace PDR.PatientBooking.Service.BookingServices
 
         public GetPatientBookingResponse GetNextAppointment(long identificationNumber)
         {
-            var bockings = _context.Order.OrderBy(x => x.StartTime).ToList();
+            var bookings = _context.Order.OrderBy(x => x.StartTime).ToList();
 
-            if (bockings.Where(x => x.Patient.Id == identificationNumber).Count() == 0)
+            if (bookings.Where(x => x.Patient.Id == identificationNumber).Count() == 0)
             {
                 return null;
             }
             else
             {
-                var bookings2 = bockings.Where(x => x.PatientId == identificationNumber);
+                var bookings2 = bookings.Where(x => x.PatientId == identificationNumber);
                 if (bookings2.Where(x => x.StartTime > DateTime.Now).Count() == 0)
                 {
                     return null;

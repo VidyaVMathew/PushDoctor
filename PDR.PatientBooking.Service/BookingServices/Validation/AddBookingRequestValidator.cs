@@ -30,7 +30,6 @@ namespace PDR.PatientBooking.Service.BookingServices.Validation
 
             return result;
         }
-
         private bool IsAnAppointmentInPast(BookingRequest request, ref PdrValidationResult result)
         {
             if (!_context.Order.Any()) return false;
