@@ -1,8 +1,10 @@
 ﻿using PDR.PatientBooking.Data;
 using PDR.PatientBooking.Service.DoctorServices.Requests;
 using PDR.PatientBooking.Service.Validation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PDR.PatientBooking.Service.DoctorServices.Validation
 {
@@ -40,6 +42,22 @@ namespace PDR.PatientBooking.Service.DoctorServices.Validation
 
             if (string.IsNullOrEmpty(request.Email))
                 errors.Add("Email must be populated");
+            else
+            {
+
+                try
+                {
+                    bool bIsValid = Regex.IsMatch(request.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+                    if (!bIsValid)
+                    {
+                        errors.Add("Email must be a valid email address");
+                    }
+                }
+                catch (RegexMatchTimeoutException)
+                {
+                    errors.Add("Email validation failed due to timeout exeption");
+                }
+            }
 
             if (errors.Any())
             {

@@ -22,7 +22,7 @@ namespace PDR.PatientBooking.Service.DoctorServices
             _validator = validator;
         }
 
-        public void AddDoctor(AddDoctorRequest request)
+        public long AddDoctor(AddDoctorRequest request)
         {
             var validationResult = _validator.ValidateRequest(request);
 
@@ -31,7 +31,7 @@ namespace PDR.PatientBooking.Service.DoctorServices
                 throw new ArgumentException(validationResult.Errors.First());
             }
 
-            _context.Doctor.Add(new Doctor
+            Doctor doctor = new Doctor
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -39,10 +39,14 @@ namespace PDR.PatientBooking.Service.DoctorServices
                 Email = request.Email,
                 DateOfBirth = request.DateOfBirth,
                 Orders = new List<Order>(),
-                Created = DateTime.UtcNow
-            });
+                Created = request.Created
+            };
+
+            _context.Doctor.Add(doctor);
 
             _context.SaveChanges();
+
+            return doctor.Id;
         }
 
         public GetAllDoctorsResponse GetAllDoctors()

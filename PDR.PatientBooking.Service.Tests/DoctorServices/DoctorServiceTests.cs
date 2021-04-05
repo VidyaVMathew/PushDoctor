@@ -100,11 +100,11 @@ namespace PDR.PatientBooking.Service.Tests.DoctorServices
                 Email = request.Email,
                 DateOfBirth = request.DateOfBirth,
                 Orders = new List<Order>(),
-                Created = DateTime.UtcNow
+                Created = request.Created
             };
 
             //act
-            _doctorService.AddDoctor(request);
+            expected.Id = _doctorService.AddDoctor(request);
 
             //assert
             _context.Doctor.Should().ContainEquivalentOf(expected, options => options.Excluding(doctor => doctor.Id));
